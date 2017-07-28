@@ -1,0 +1,8 @@
+{%- set mysql = salt['grains.filter_by']({
+    'Debian': {
+        'pkg': 'mysql-server',
+        'service': 'mysql',
+        'config': '/etc/mysql/my.cnf',
+        'bind': {},
+    },
+}, merge=salt['pillar.get']('mysql:server')) %}

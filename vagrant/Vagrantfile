@@ -1,0 +1,22 @@
+# Single box with VirtualBox provider and Salt provisioning.
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/xenial64"
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize [
+      "modifyvm", :id,
+      "--cpuexecutioncap", "50",
+      "--memory", "1024",
+    ]
+  end
+
+  config.vm.synced_folder "salt/roots", "/srv/salt"
+  config.vm.provision :salt do |salt|
+    salt.masterless = true
+    salt.minion_id = 'app'
+    salt.minion_config = 'salt/minion'
+    salt.grains_config = 'salt/grains'
+    salt.run_highstate = true
+  end
+end
