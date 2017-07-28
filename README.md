@@ -1,6 +1,6 @@
 # Simple app
 
-There are two solutions in this repo. First in a more common way - `vagrant`+`salt`.
+There are two solutions in this repo. First in a more common way - `vagrant` + `salt`.
 But because vagrant is mostly used as a local playgroud, I assume that real purpose of that internal service, is just for local code testing. And therefore I would use different solution for that.
 
 ## Vagrant solution
@@ -9,9 +9,10 @@ But because vagrant is mostly used as a local playgroud, I assume that real purp
 You have to have `virtualbox` and `vagrant` installed on your system.
 
 ### How to use
-
-
-
+We have to start and provision vm with vagrant. It will take some time.
+```
+cd ./vagrant && vagrant up
+```
 
 ## Docker solution
 
@@ -43,4 +44,11 @@ $ ./control start
 Stop:
 ```
 $ ./control stop
+```
+
+## Verification
+In both cases it should be:
+```
+$ curl http://127.0.0.1:8080
+Hello World
 ```

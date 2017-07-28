@@ -1,7 +1,15 @@
 nginx:
   pkg.installed: []
   service.running:
+    - enable: True
     - require:
       - pkg: nginx
 
-# TODO: deploy nginx configs and reloads
+/etc/nginx:
+  file.recurse:
+    - source: salt://nginx/files/configs
+    - makedirs: True
+    - require:
+      - pkg: nginx
+    - watch_in:
+      - service: nginx

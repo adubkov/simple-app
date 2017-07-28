@@ -1,0 +1,12 @@
+[Unit]
+Description=app
+
+[Service]
+ExecStart=/usr/bin/nodejs /opt/app/app.js
+ExecStop=/bin/kill $MAINPID
+KillMode=process
+Restart=on-failure
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
