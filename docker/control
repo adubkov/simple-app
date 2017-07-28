@@ -1,0 +1,31 @@
+#!/bin/bash
+
+WORKSPACE="$(pwd)"
+
+export ASSETS="${WORKSPACE}/assets"
+
+function build() {
+    docker build ${WORKSPACE} -t app:latest
+}
+
+function start() {
+    docker-compose -f compose.yaml -p app-stack up -d
+}
+
+function stop() {
+    docker-compose -f compose.yaml -p app-stack down
+}
+
+case "$1" in 
+    build) 
+            build;;
+    start)
+            start;;
+    stop)
+            stop;;
+    *)
+            echo $"Usage $0 {build|start|stop}"
+            exit 1
+esac
+
+exit $?

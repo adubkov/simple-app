@@ -1,0 +1,38 @@
+version: '2'
+services:
+  memcached:
+    image: memcached:1.5.0
+    restart: on-failure
+    expose:
+      - "11211/tcp"
+  mysql:
+    image: mysql:8.0.2
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: pa$$w0rd
+    expose:
+      - "3306/tcp"
+    volumes:
+        - ${ASSETS}/db:/var/lib/mysql
+  app:
+    image: app:latest
+    expose:
+      - "8080/tcp"
+    volumes:
+      - ${ASSETS}/app:/opt/app
+    depends_on:
+      - memcached
+      - mysql
+  nginx:
+    image: nginx:mainline
+    restart: on-failure
+    ports:
+      - "8080:80"
+    links:
+      - "memcached:cache"
+      - "mysql:db"
+      - "app"
+    volumes:
+      - ${ASSETS}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${ASSETS}/nginx/proxy.conf:/etc/nginx/proxy.conf:ro
+      - ${ASSETS}/logs/nginx:/var/log/nginx
